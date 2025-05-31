@@ -1,7 +1,7 @@
 # JavaScript-Interview
 This repository includes JavaScript interview notes and questions.
 
-## JavaScript Basics
+# WHAT IS JAVASCRIPT ?
 
 1. JavaScript was created by Brendan Eich in 1995 while he was working at Netscape Communications. Initially called Mocha, it was later renamed LiveScript and then finally JavaScript due to increasing popularity of Java. 
 
@@ -23,7 +23,7 @@ This repository includes JavaScript interview notes and questions.
 
 **Once the task is done, the event loop picks callback to be executed from the callback queue and executes the callback or promise resolution, effectively handling tasks without blocking the main thread.**
 
-## Data Types in JavaScript
+# DATA TYPES IN JAVASCRIPT
 
 ### Primitive Type
 
@@ -392,10 +392,80 @@ obj = null; // The object can now be garbage collected
 
 ```
 
+## EXECUTION CONTEXT
+
+Everything in JS happens in an execution context. Whenever any code is executed, an execution context is created which is global execution context.
+
+An execution context is a box which contains 2 components.
+    - Memory Component (Environment variable) : Here all variables and functions are stored as key-value pairs. Variables are assigned undefined and literally the whole functions in case of functions.
+
+    - Code Component (Thread of Execution) : Code is executed here one lime at a time.
+
+
+**Execution context is created in 2 phases - Memory creation phase and Thread of execution.**
+
+        · Memory Creation Phase : In this Phase, Memory is allocated to all the variables and functions which are present in the that scope. Special keyword undefined is assigned to variables and literally the whole function in case of functions.
+         
+        · Code Execution Phase : In this Phase, code is executed line by line.**
+
+Whenever there is function invocation, new execution context is created and same process is followed again.
+
+If there is any function parameter it is also allocated memory.
+
+**Whenever any return keyword is encountered, it means the task of function is over and it returns the control of the program back to the place it was invoked and with this execution context is deleted from the stack.**
+
+**Call Stack** - **It is a stack which maintains the order of execution of execution context.Whenever a code is executed, GEC is created and pushed into the stack and later on as per the function invocation, the execution context is created and pushed into the call stack. When the function code is done executing the execution context is popped out and in last global execution context is also deleted.**
+
+Call Stack is also called execution context stack, program stack, control stack, runtime stack, machine stack etc.
+
+
+## Hoisting
+
+**Hoisting is a mechanism in JS where the variables and functions declarations are moved to the top of the scope before execution. It means they all are declared before the execution of the code.**
+
+Hoisting is not about physically moving code to the top, but rather how JS allocates memory for variables and functions during the memory creation phase of the execution context.
+
+1. The variables get initialized to undefined.
+2. Arrow functions enact as variables and get assigned undefined during memory creatio phase and functions get actually the exact value.
+3. It is possible to call a function before initializing it because entire function is available in the memory.
+
+```javascript
+sayHello(); // Output: Hello!
+
+function sayHello() {
+  console.log("Hello!");
+}
+
+```
+
+4. Trying to access the variable before declaration result in undefined.
+
+```javascript
+console.log(a); // Output: undefined
+var a = 20;
+```
+
+5. Function expressions and arrow functoions which are assigned undefined, trying to accesss them before initialization results in refernce error.
+
+```javascript
+console.log(foo); // ReferenceError: Cannot access 'foo' before initialization
+const foo = function () {
+  console.log("Hello from function expression");
+};
+
+```
+
+```javascript
+console.log(bar); // ReferenceError: Cannot access 'bar' before initialization
+const bar = () => {
+  console.log("Hello from arrow function");
+};
+```
 
 
 
-## Scope and Lexical Environment
+
+## SCOPE AND LEXICAL ENVIRONMENT
 
 Whenever an execution context is created, a lexical environment is also created.
 
@@ -442,7 +512,35 @@ _Lexical env of A_
     -Global
 
 
-## Closure
+```javascript
+var x = 1;
+
+a();
+b();
+
+console.log(x);
+
+function a() {
+    var x = 10;
+    console.log(x);
+}
+
+function b() {
+    var x = 100;
+    console.log(x);
+}
+```
+
+The output will be:
+
+```bash
+10
+100
+1
+```
+
+
+# CLOSURE
 
 **Closure is a combination of function bundled together with its reference to lexical environment.**
 
