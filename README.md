@@ -1,5 +1,398 @@
 # JavaScript-Interview
-This repository includes JavaScript interview questions and preparation.
+This repository includes JavaScript interview notes and questions.
+
+## JavaScript Basics
+
+1. JavaScript was created by Brendan Eich in 1995 while he was working at Netscape Communications. Initially called Mocha, it was later renamed LiveScript and then finally JavaScript due to increasing popularity of Java. 
+
+2. It was developed to add interactivity to websites and run in web browsers. JavaScript became standardized as ECMAScript in 1997, ensuring consistency across different browsers.
+
+3. JavaScript is most love, most hated and most beautiful language.
+
+4. Scripting Language - It is a type of programming language that interprets instructions individually at runtime rather than compiling them in advance.
+
+5. JS is weakly-typed or loosely-typed language, it means it doesn't depend on data type declarations. Same variable can be used to store number, string, boolean type values.
+
+6. JavaScript is synchronous single threaded-language. Single threaded means it can execute one command at a time.
+
+7. **Synchronous Single threaded means JavaScript can execute only one command at a time in specific order it is written and each operation must finish before next one starts.**
+
+#### How JS can handle asynchronous tasks ?
+
+**JavaScript handles asynchronous tasks using mechanisms like callbacks, async-await, promises. While JavaScript itself is synchronous, it offloads time-consuming tasks such as i/o operation, fetching data to event loop. This allow rest of the code to keep running without waiting for these tasks to finish.**
+
+**Once the task is done, the event loop picks callback to be executed from the callback queue and executes the callback or promise resolution, effectively handling tasks without blocking the main thread.**
+
+## Data Types in JavaScript
+
+### Primitive Type
+
+These are immutable and stored by value.
+
+| Type      | Example                      |
+|-----------|------------------------------|
+| String    | `"hello"`, `'abc'`           |
+| Number    | `42`, `3.14`                 |
+| Boolean   | `true`, `false`              |
+| Null      | `null`                       |
+| Undefined | `undefined`                  |
+| Symbol    | `Symbol("id")`               |
+| BigInt    | `123n`, `BigInt(999)`        |
+
+
+### Non-Primitive / Reference Types
+
+Stored by reference (mutable).
+
+
+| Type      | Example                               |
+|-----------|---------------------------------------|
+| Object    | `{ name: "Alice" }`, `[1, 2, 3]`      |
+| Function  | `function() {}`, `() => {}`           |
+
+### JavaScript Type Behaviors, Coercion & Quirks
+
+#### 🔹 Arrays, Dates, Maps, and Sets Are Objects
+
+- Arrays are also objects.
+- Dates, Maps, and Sets are also objects.
+
+```js
+typeof []   // "object"
+typeof {}   // "object"
+```
+
+#### 🔹 Functions Are Special Objects
+
+- Even though functions are technically objects, JavaScript treats them as a **special kind** of object.
+- `typeof` returns `"function"` for them.
+- This also applies to **classes**, which are syntactic sugar over functions.
+
+```js
+typeof (() => {})         // "function"
+typeof function() {}      // "function"
+typeof class MyClass {}   // "function"
+```
+
+---
+
+#### 🔹 typeof `null` → `"object"` ❗
+
+- This is a long-standing **bug** in JavaScript.
+- `null` is **not** actually an object.
+- The behavior is preserved for **backward compatibility**.
+
+```js
+typeof null   // "object"
+```
+
+---
+
+### 🔹 typeof `undefined` → `"undefined"`
+
+```js
+typeof undefined   // "undefined"
+```
+
+---
+
+#### 🔹 typeof `NaN` → `"number"`
+
+```js
+typeof NaN   // "number"
+NaN === NaN  // false
+NaN == NaN   // false
+Number.isNaN(NaN)  // true
+```
+
+---
+
+#### 🔹 Type Coercion Examples
+
+- `String + Number` → **String**
+- `String - Number` → **Number** (if possible), else **NaN**
+
+```js
+console.log("5" + 2 - 1);            // "52" - 1 => 51
+console.log("5" + true);            // "5true"
+console.log("5" + true - undefined); // "5true" - undefined => NaN
+console.log("5" + true + undefined); // "5trueundefined"
+console.log("10" * null);           // 0 (null coerces to 0)
+console.log("10" * undefined);      // NaN (undefined coerces to NaN)
+console.log("5" / false);           // (False coerces to 0) Infinity
+console.log(null + true);           // 1
+console.log(undefined + "5");       // "undefined5"
+console.log("10" - true + null);    // 9
+console.log([] + false - null + true); // ("" + "false" -> "false" - null -> NaN - null -> NaN + true = NaN)   NaN
+```
+
+---
+
+#### 🔹 Arrays in Coercion
+
+- Arrays get converted to **strings** during addition.
+
+```js
+console.log([] + []);               // "" (empty string)
+console.log([2, 3, 4] + [1, 2, 3]); // "2,3,41,2,3"
+```
+
+---
+
+#### 🔹 Other Weird Coercions
+
+```js
+console.log(true + true);           // 2
+```
+
+**JavaScript Conversion Steps:**
+
+- `[]` → `""` → `0`
+- `false` → `0`
+
+---
+
+#### 🔹 Falsy Values in JavaScript
+
+- `false`, `0`, `""`, `null`, `undefined`, `NaN`
+
+> ✅ Note: Empty **array** (`[]`) and empty **object** (`{}`) are **truthy** values. This is because objects are always truthy in JS.
+
+```js
+[] == 0         // true ([] becomes empty string "" and "" is coerced to 0 so 0 == 0)
+[] == "0"       // false ([] becomes empty string "" and "" is not equal to "0")
+{} == 0         // false ({} -> "[object Object]" so "[object Object] == 0 => NaN == 0 which is false")
+{} == "0"       // false ({} -> "[object Object]" so "[object Object] == "0" => false")
+
+console.log([] + {});    // "[object Object]"   because "" + "[object Object]"
+console.log({} + []);    // 0 (Js parse {} as empty block , so empty block + "", this empty string is coerced to 0, so {} + 0 is 0) 
+```
+
+---
+
+#### 🔹 Function Declaration Inside Block Scope
+
+```js
+if (true) {
+  function test() {
+    return "hi";
+  }
+}
+console.log(typeof test); // "function" in some environments, "undefined" in others
+```
+
+> This is due to **inconsistent function hoisting** inside blocks.
+
+---
+
+#### 🔹 Tricky Equality
+
+```js
+console.log([] == ![]); // true
+// Step by step:
+// ![] → false
+// [] == false
+// [] → "" → 0
+// false → 0
+// 0 == 0 → true
+
+console.log([] == false); // true ( 0 == false)
+
+console.log([null] == ""); // true
+// [null] → "" → equals ""
+```
+
+---
+
+#### 🔹 Number Conversion
+
+```js
+Number(undefined); // NaN
+```
+
+
+## EcmaScript
+
+EcmaScript is standardized specification for scripting such as JavaScript, JScript, ActionScript.
+It defines the core features and syntax which a language should support.
+EcmaScript ensures that JS behaves the way across different environments such as web browsers and server-side platforms.
+
+### Versions of EcmaScript
+
+1. ES1 (1997) : Basic syntax and structure, var, control flows, loops, functions.
+2. ES3 (1999) : First widely adopted version, foundation of JS.
+3. ES5 (2009) : Strict mode, getters and setters, array methods.
+4. ES6 (2015) : Promises, let & const, template literals, map & sets, weakmap & weaksets, classes, rest and spread operator, arrow functions, symbol data type, modules , destructuring assignments.
+5. ES7 (2016) : exponentiation operator (**) , Array.prototype.includes
+6. ES8 (2017) : Async/Await - made asynchronous code more readable.
+7. ES9 (2018) : asynchronous iteration and the rest/spread operator for objects.
+8. ES10 (2019) : Array.prototype.flat and flatMap.
+
+After 2015 (ES6), ECMAScript updates have been released yearly.
+
+### ES6 features of JavaScript
+
+#### Arrow Functions
+```javascript
+const add = (a, b) => a + b;
+```
+
+#### Classes
+
+```javascript
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+}
+```
+
+#### Template Literals
+
+```javascript
+const name = 'Alice';
+console.log(`Hello, ${name}`);
+```
+
+#### Promises
+
+```javascript
+new Promise((resolve, reject) => {
+  // async operation
+});
+
+```
+
+#### let and const
+
+```javascript
+let count = 1;
+const PI = 3.14;
+
+```
+#### Rest & Spread Operator
+
+```javascript
+function sum(...args) {
+  return args.reduce((a, b) => a + b, 0);
+}
+
+const arr1 = [1, 2];
+const arr2 = [...arr1, 3, 4];
+
+```
+
+#### Default Parameters
+
+Allows function parameters to have default values:
+
+```javascript
+function greet(name = 'Guest') {
+  console.log(`Hello, ${name}!`);
+}
+
+greet();       // Hello, Guest!
+greet('John'); // Hello, John!
+
+```
+
+#### Symbol data type
+
+```javascript
+const sym = Symbol('description');
+console.log(sym); // Symbol(description)
+
+```
+#### Modules
+
+Split code into reusable pieces using export and import:
+
+```javascript
+// module.js
+export const greet = () => console.log("Hello from the module!");
+
+// main.js
+import { greet } from './module.js';
+greet(); // Hello from the module!
+
+```
+
+#### Destructuring Assignments
+
+Array Destructuring
+
+```javascript
+const arr = [1, 2, 3];
+const [a, b] = arr; // a = 1, b = 2
+
+```
+
+Object Destructuring
+
+```javascript
+const person = { name: 'Alice', age: 25 };
+const { name, age } = person; // name = 'Alice', age = 25
+
+```
+
+#### Map and Set Data-Structure
+
+Map: A collection of key-value pairs where keys and values can be any type:
+
+```javascript
+const map = new Map();
+map.set('name', 'Alice');
+map.set('age', 25);
+console.log(map.get('name')); // Alice
+map.delete('age');
+console.log(map.has('name')); // true
+map.clear();
+```
+
+Set: A collection of unique values::
+
+```javascript
+const set = new Set();
+set.add(1);
+set.add(2);
+set.add(2); // Duplicate ignored
+console.log(set); // Set {1, 2}
+set.delete(2);
+console.log(set.has(1)); // true
+set.clear();
+```
+
+
+#### Weak Map and Weak Set Data-Structure
+
+- WeakMap: Like Map, but keys must be objects (not primitives).
+
+- WeakSet: Like Set, but values must be objects.
+
+- Keys/values are weakly referenced (do not prevent garbage collection).
+
+- No size or iteration methods available.
+
+- Useful for memory-efficient data structures.
+
+- Allows storing metadata for objects (e.g., DOM elements) without preventing garbage collection.
+
+```javascript
+const weakMap = new WeakMap();
+let user = { name: "Alice" };
+weakMap.set(user, "some data");
+
+user = null; // The object may now be garbage collected (and removed from WeakMap)
+
+const weakSet = new WeakSet();
+let obj = { id: 1 };
+weakSet.add(obj);
+
+obj = null; // The object can now be garbage collected
+
+```
+
+
 
 
 ## Scope and Lexical Environment
@@ -92,7 +485,7 @@ a();
 
 _In b stack => Closure(a)  x:10_
 
-_Here function b binds with a to form the closure. because it is holding x. So, whenever it will return it will return entire closure.
+_Here function b binds with a to form the closure. because it is holding x. So, whenever it will return it will return entire closure._
 
 
 ```javascript
@@ -110,6 +503,7 @@ z();
 ```
 
 _console.log(z) --------> It will print f b() {console.log(x)}_
+
 _console.log(z()) -------> It will print 10_
 
 _So whenever functions are returned they are returned with their lexical scope._
