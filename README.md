@@ -13,6 +13,13 @@ This repository includes JavaScript interview notes and questions.
 
 5. JS is weakly-typed or loosely-typed language, it means it doesn't depend on data type declarations. Same variable can be used to store number, string, boolean type values.
 
+```javascript
+var a;
+a = 5;
+a = "hello";
+a = true;
+```
+
 6. JavaScript is synchronous single threaded-language. Single threaded means it can execute one command at a time.
 
 7. **Synchronous Single threaded means JavaScript can execute only one command at a time in specific order it is written and each operation must finish before next one starts.**
@@ -418,8 +425,10 @@ If there is any function parameter it is also allocated memory.
 
 Call Stack is also called execution context stack, program stack, control stack, runtime stack, machine stack etc.
 
+Whenever an execution context is created, this variable is also created.
 
-## Hoisting
+
+## HOISTING
 
 **Hoisting is a mechanism in JS where the variables and functions declarations are moved to the top of the scope before execution. It means they all are declared before the execution of the code.**
 
@@ -461,6 +470,79 @@ const bar = () => {
   console.log("Hello from arrow function");
 };
 ```
+
+#### Shortest JS Program
+
+Shortest JS program is an empty file. Though there is nothing in the code, JS engine still creates GEC and set up memory. JS engine creates a global window object.
+
+### Global Space
+
+Any code in JS which is not inside any function or block, is inside global space / scope.
+In global level, this === window.
+whatever variables or functions we write in global space, gets attached to global object (window in case of browsers).
+
+```javascript
+var a = 10;
+console.log(a);
+console.log(window.a);
+console.log(this.a);
+
+// All are same and prints 10
+```
+
+### Undefined 
+
+1. **Undefined is a special placeholder in JS which is used to reserve memory for variables in memory creation phase.**
+    - Undefined itself is a datatype.
+
+2. Even before single line of code is executed, JS engine assigns undefined to variables.
+
+3. **Not defined** : This comes as an error when JS engine neither find that particular variable nor its placeholder in the scope chain.
+
+```javascript
+console.log(x);
+var x = 1;
+a();
+console.log(x);
+ 
+function a(){
+    var y= 10;
+    console.log(y);
+}
+ 
+console.log(window.x);
+console.log(x);
+console.log(y);
+```
+
+The output is:
+
+```bash
+    undefined
+    10
+    1
+    1
+    1
+    Uncaught ReferenceError: y is not defined
+```
+
+
+```javascript
+var a;
+console.log(a);    // undefined
+
+if(a===undefined){
+    console.log('true');      //true
+}
+```
+
+The output is:
+
+```bash
+    undefined
+    true
+```
+
 
 
 
@@ -511,6 +593,8 @@ _Lexical env of A_
         a : f a()
     -Global
 
+
+**Example:**
 
 ```javascript
 var x = 1;
