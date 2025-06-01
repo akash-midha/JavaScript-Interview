@@ -543,6 +543,44 @@ The output is:
     true
 ```
 
+## VAR, LET , CONST
+
+### Difference Between `var`, `let`, and `const`
+
+| Feature                      | `var`                                | `let`                                 | `const`                                |
+|------------------------------|--------------------------------------|---------------------------------------|----------------------------------------|
+| Scope                        | Function Scope                       | Block Scope                           | Block Scope                            |
+| Re-declaration               | Allowed                              | Not Allowed                           | Not Allowed                            |
+| Re-assignment                | Allowed                              | Allowed                               | Not Allowed                            |
+| Hoisting                     | Yes (initialized as `undefined`)     | Yes (but not initialized, Temporal Dead Zone) | Yes (but not initialized, Temporal Dead Zone) |
+| Default Initialization       | `undefined`                          | No                                    | No                                     |
+| Temporal Dead Zone (TDZ)     | No                                   | Yes                                   | Yes                                    |
+| Global Object Property (in browsers) | Yes (`window.varName`)             | No                                    | No                                     |
+| Use Case                     | Legacy code, avoid in modern JS      | Preferred for variables that change   | Preferred for constants (no reassignment) |
+
+> 🔹 **Note:** `const` does not mean immutable. For objects/arrays declared with `const`, properties/elements can still be changed.
+=> **const is only assignment immutable.**
+
+### ✅ 3 Different Types of Errors in JavaScript
+
+| **Error Type**      | **When It Occurs**                                                                  | **Example**                        | **Description**                                                              |
+|---------------------|--------------------------------------------------------------------------------------|------------------------------------|------------------------------------------------------------------------------|
+| **Syntax Error**     | When the JavaScript code is not written in proper syntax.                           | `console.log("Hello"`              | Missing closing parenthesis or bracket. Code won’t run at all.              |
+| **Reference Error**  | When trying to access a variable that hasn’t been declared.                         | `console.log(x); // x not defined` | Variable is not in scope or not declared.                                   |
+| **Type Error**       | When a value is not of the expected type or an operation is done on the wrong type. | `null.toUpperCase()`              | Performing invalid operations on a type.                                    |
+
+---
+
+## 🔍 Examples
+
+### 1. Syntax Error
+```javascript
+// Missing closing parenthesis and semicolon
+console.log("Hello"  
+// ❌ SyntaxError: missing ) after argument list
+
+
+
 
 
 
