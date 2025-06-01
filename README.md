@@ -560,27 +560,80 @@ The output is:
 
 > 🔹 **Note:** `const` does not mean immutable. For objects/arrays declared with `const`, properties/elements can still be changed.
 => **const is only assignment immutable.**
+=> When there is syntax error, not even one line of code is executed. It is compilation error.
+=> ReferenceError and TypeErrror are runtime errors and caught in betweeen
+
+
+Level of strictness: var < let < const
+=> const declaration and initialization must be done on same line.
+
+```javascript
+var a;
+var a = 10;
+var a = 50;
+console.log(a);   //50
+```
+
+
+```javascript
+let a;
+a = 10;
+a = 50;
+console.log(a);   //50
+```
 
 ### ✅ 3 Different Types of Errors in JavaScript
 
 | **Error Type**      | **When It Occurs**                                                                  | **Example**                        | **Description**                                                              |
 |---------------------|--------------------------------------------------------------------------------------|------------------------------------|------------------------------------------------------------------------------|
-| **Syntax Error**     | When the JavaScript code is not written in proper syntax.                           | `console.log("Hello"`              | Missing closing parenthesis or bracket. Code won’t run at all.              |
+| **Syntax Error**     | When the JavaScript code is not written in proper syntax. Similar to compilation error                           | `console.log("Hello"`              | Missing closing parenthesis or bracket. Code won’t run at all.              |
 | **Reference Error**  | When trying to access a variable that hasn’t been declared.                         | `console.log(x); // x not defined` | Variable is not in scope or not declared.                                   |
-| **Type Error**       | When a value is not of the expected type or an operation is done on the wrong type. | `null.toUpperCase()`              | Performing invalid operations on a type.                                    |
+| **Type Error**       | When a value is not of the expected type or an operation is done on the wrong type. (eg- re-initializing const variable) | `null.toUpperCase()`              | Performing invalid operations on a type.                                    |
 
----
 
-## 🔍 Examples
-
-### 1. Syntax Error
 ```javascript
-// Missing closing parenthesis and semicolon
-console.log("Hello"  
-// ❌ SyntaxError: missing ) after argument list
+var a;
+let b;
+const c; //SyntaxError: missing initializer in const declaration.
+c = 10;
+```
+
+```javascript
+var a;
+let b;
+const c = 20;
+c = 10; //TypeError: Assignment to constant variable is not allowed.
+```
+
+```javascript
+console.log(a); //ReferenceError : cannot access 'a' before initialization
+let a = 50;
+console.log(a);
+```
+
+```javascript
+console.log(a); //ReferenceError : a is not defined
+var b = 50;
+```
+
+```javascript
+console.log(a); //ReferenceError : a is not defined
+var b = 50
+```
+
+```javascript
+console.log(a); //ReferenceError : a is not defined
+var b = 50;
+```
 
 
+#### Temporal Dead Zone
 
+1. let and const are hoisted but not initialized. This means they are in temporal dead zone from start of the block until they are initialized. This means they cannot be accessed before initialization.
+
+2. JS use different memory rather than GEC to store let and const i.e. script/block (var is stored in GEC) , this is the reason behind temporal dead zone.
+
+3. Temporal dead zone exists from start of the scope until variable is initialized / assigned some value.
 
 
 
@@ -660,6 +713,65 @@ The output will be:
 100
 1
 ```
+
+### Block, Scope and Shadowing
+
+Multiple statements compounded in a group enclosed in curly brackets for a block. It is used to group multiple statements together.
+
+JS sometimes expect a single statement, but we need to run multiple commands.
+
+```javascript
+if(true) var a = 10;
+
+if(true){
+    var a = 20;
+    console.log(a);
+}
+```
+
+1. let and const are block scoped variables. let and var cannot be accessed outside block(let and const are stored in block environment) while var is functional scoped and can be accessed (as var is stored in global object memory space),
+
+```javascript
+let x = 10;
+function example(){
+    let x = 20;
+    console.log(x); //     20
+}
+example();
+console.log(x);   //10
+```
+
+```javascript
+var a = 10;
+{
+    var a = 20;
+}
+console.log(a);    //20
+// var a is stored in global memory, so a = 20 will override the pre-existing value, while it is not the case with let and const.
+```
+
+**Shadowing**: **When variable declared in inner scope has same name as variable name of outer scope. The inner variable shadows the outer scope variable.**
+
+Shadowing is possible with var, let and const.
+
+```javascript
+let a = 10;
+{
+    let a = 20;
+    console.log(a);  //20
+}
+console.log(a);    //10
+```
+
+**Illegal Shadowing** : **Shadowing let or const with var or const is not allowed and will throw syntax error**
+
+```javascript
+let x = 10;
+{
+    var x = 20; //SyntaxError: Identifier 'x' has already been declared
+}
+```
+
 
 
 # CLOSURE
