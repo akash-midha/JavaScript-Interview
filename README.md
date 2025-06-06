@@ -869,4 +869,776 @@ x();
 7. Functions like once
 
 
+## FIRST CLASS FUNCTIONS
+
+#### Function Statement / Function Declaration
+
+The normal function which we craete using naming convention and with this we can do hoisting.
+
+```javascript
+    function a(){
+        console.log('This is function statement.');
+    }
+```
+
+#### Function Expression 
+
+Functions which are assigned to variable. They act as variables and thus cannot be accessed before definition.
+
+```javascript
+    var x = function a(){
+        console.log('This is function expression');
+    }
+```
+
+**The main difference b/w function statement and expression is hoisting, function statements are hoisted while function expressions themselves are not hoisted, their variable is hoisted only and accessing it before definition results in undefined (if assigned as var, and if with let or const result in refernce error due to TDZ.)**
+
+#### Named Function Expression
+
+Function with a name and assigned to variable.
+
+```javascript
+    var a = function x(){
+        console.log('This function is a');
+    }
+    a(); // will give output 
+    x(); //x is not defined
+```
+
+```javascript
+    var a = function x(){
+        console.log(x);
+    }
+    a(); // f x(){console.log(x)}
+```
+
+#### Anonymous Functions
+
+Function without any name. They are also called lambda functions.
+
+It doesn't have any identity and cannot be used like this:
+```javascript
+function (){
+    console.log('Hi'); 
+}
+```
+
+It is used where functions can be treated as a value. They are used as a callback function.
+
+eg-
+
+```javascript
+setTimeOut(function(){
+    console.log('Hi');
+}, 1000)
+```
+
+#### Parameters and Arguments
+
+Parameters are local variables for that function.
+
+Arguments are the variables which we pass while invoking a function.
+
+```javascript
+function sum(a,b){
+    console.log(a+b);
+}
+var x = 2;
+var y = 3;
+sum(x,y);
+// Here x and y are arguments & a and b are parameters.
+```
+
+#### Spread and Rest Operator
+
+... syntax is used for both spread and rest operator.
+
+**Spread operator is used to spread the elements of array or object.**
+Examples of Spread Operator
+
+```javascript
+const arr = [1, 2, 3];
+function example(a, b, c, d){
+    console.log(a + b + c + d);  // 10 
+}
+example(...arr, 4);
+```
+
+```javascript
+const arr1 = [1, 2];
+const arr2 = [3, 4];
+const merged = [...arr1, ...arr2]; // [1, 2, 3, 4]
+```
+
+
+```javascript
+const obj = { a: 1, b: 2 };
+const newObj = { ...obj, c: 3 };
+console.log(newObj); // { a: 1, b: 2, c: 3 }
+```
+
+**Rest operator is used to collect remaining elements of array or object.**
+
+```javascript
+const [first, ...rest] = [10, 20, 30, 40];
+console.log(first); // 10
+console.log(rest);  // [20, 30, 40]
+```
+
+```javascript
+const { a, ...others } = { a: 1, b: 2, c: 3 };
+console.log(a);      // 1
+console.log(others); // { b: 2, c: 3 }
+```
+
+```javascript
+function multiply(a, ...nums){
+    console.log(nums);  // [3,4]
+    console.log(a * nums[0] * nums[1]); // 24
+}
+var x = 2;
+var y = 3;
+var z = 4
+multiply(x, y, z);
+```
+
+#### First class Functions
+
+The ability of a function to be treated as a value is the first class functions. In Js, functions are first class citizens.
+    - Functions can be passed as argument / parameter.
+    - Functions can be returned from another function.
+
+#### Immediately Invoked Function Expressions (IIFE)
+
+IIFE runs as soon as it is defined.
+
+```javascript
+(function square(num){
+    console.log(num*num);    // 4
+}(2));
+```
+
+
+```javascript
+(function (x){
+    (function (y){
+        console.log(x);  // 3
+    }(2))
+}(3))
+```
+
+#### Arrow Functions
+
+Arrow functions are concise syntax for writing functions introduced in ES6.
+
+Implicit return: For single-expression functions, we can omit the return keyword and the curly braces.
+Arrow Functions cannot be used as constructors: cannot use new with arrow functions.
+
+```javascript
+    // Function declaration
+
+    function square(num){
+        return num*num;
+    }
+
+    // Function Expression
+
+    const square = function(num){
+        return num*num;
+    }
+
+    // Arrow Functions
+
+    const square = () => num*num;
+```
+
+**Arrow functions do not have their own `this` context. They inherit this from their enclosing lexical scope.**
+
+```javascript
+const shape = {
+    radius: 10,
+    diameter() {
+        return this.radius * 2;  // `this` refers to `shape`
+    },
+    perimeter: () => 2 * Math.PI * this.radius,  // `this` does NOT refer to `shape` and this.radius here is undefined
+};
+
+console.log(shape.diameter());   // 20
+console.log(shape.perimeter());  // NaN
+```
+
+No arguments object: Arrow functions don’t have their own arguments object. It take the arguments of its lexical scope.
+
+```javascript
+    function normal(){
+        console.log(...arguments); // 1,2,3
+    }
+    normal(1,2,3);
+
+    // Function expressions also behave the same as function declaration.
+
+    //Arrow Functions
+
+    function arrow = () => console.log(...arguments); //ReferenceError: arguments is not defined
+    arrow(1,2,3);
+```
+
+
+
+
+
+```javascript
+const sumAndLog = (a, b) => {
+  const sum = a + b;
+  console.log(sum);
+  return sum;
+};
+```
+
+#### Callback Functions
+
+Functions which are passed as an argument to another function are called callback functions.
+
+
+```javascript
+function square(num){
+    return num*num;
+}
+
+function displaysquare(fn){
+    console.log("Square is +" fn(5));
+}
+
+displaysquare(square);
+```
+
+
+```javascript
+setTimeout(function (){
+    console.log('a');
+}, 1000)
+
+// Callback function is passed inside setTimeout.
+```
+
+We can do asynchronous operations only because of callback function which prevent the blocking of main thread.
+
+#### Higher Order Functions
+
+Functions that take another function as an argument or value are called higher order functions.
+
+```javascript
+function x(y){
+    console.log('x');
+    y();
+}
+
+x(function(){
+    console.log(y);
+})
+// It is upto x when it is calling y. Here x is higher order function and y is callback function.
+```
+
+```bash
+x
+y
+```
+
+
+```javascript
+const radius = [1,2,3];
+
+const calculateCircumference = function (radius){
+    return 2 * Math.PI * radius;
+}
+
+const calculateArea = function (radius){
+    return Math.PI * radius * raius;
+}
+
+const calculateDiameter = function(radius){
+    return 2 * radius;
+}
+
+const calculate = function(logic){
+    const output = [];
+    for(let i=0; i < this.length; i++){
+        output.push(logic(this[i]));
+    }
+    return output;
+}
+
+console.log(radius.map(calculateArea));
+```
+
+We can have instead higher order function for this:
+
+```javascript
+
+```
+
+> "Breaking Down: "Khana khane ke baad bartan andar rakh" is like a higher-order function. "Bartan andar rakh" is like the callback function. How It Works: The higher-order function (khana khane ke baad bartan andar rakh) does something (e.g., eating food) and then calls another function when it’s done (bartan andar rakh). The callback function (bartan andar rakh) is the action that gets executed after the main task is completed. In this analogy: Khana khana (eating food) is the main task. Bartan andar rakh (putting the dishes away) is the additional task that happens after, which is like the callback function being executed after the main function is done. So, "bartan andar rakh" is acting like a callback function that gets executed after the main action (eating) is completed."
+
+
+#### Pure Function
+
+A pure function is a function that adheres to the following two main principles:
+    1. Deterministic: The function always produces the same output given the same input.
+    2. No Side Effects: The function does not modify any external state or variables. It doesn't change anything outside of the function (e.g., no modifying global variables, no logging to the console, no writing to a file, no updating a database, etc.).
+
+### setTimeout
+
+```javascript
+for(var i=1; i<=5; i++){
+    setTimeOut(()=>{
+        console.log(i);
+    }, 1000);
+}
+
+// 6 will be printed 5 times because i is pointing to the same refernce and will be equal to 6 at the time of printing
+```
+
+```javascript
+for(let i=1; i<=5; i++){
+    setTimeOut(()=>{
+        console.log(i);
+    }, 1000);
+}
+
+// Output - 1 2 3 4 5
+//  because i is pointing to the different refernces.
+```
+
+```javascript
+for(var i=1; i<=5; i++){
+    function close(x){
+        setTimeOut(()=>{
+            console.log(x);
+        })
+    }
+    close(i);
+}
+
+// Output - 1 2 3 4 5
+// We had now created a closure and now x everytime forms a different copy of i.
+```
+
+The callback in setTimeout is pushed to callback queue and is only executed if call stack is empty even if setTimeout time is 0s.
+
+
+Ques. How does it matter if we delay for setTimeout would be 0ms. Then callback will move to queue without any wait? 
+Ans. No, the callback function needs to wait until the call stack is empty. So the 0 ms callback might have to wait for sometime also if the stack is busy. 
+
+
+```javascript
+console.log('start');  // Logs 'start'
+
+// Set up a timeout to log 'after 5 sec' after 5 seconds
+setTimeout(() => {
+  console.log('after 5 sec');  // Logs 'after 5 sec' after 5 seconds
+}, 5000);
+// Blocking the main thread for 10 seconds (synchronous, CPU-intensive operation)
+const startTime = Date.now();
+while (Date.now() - startTime < 10000) {
+  // Keep the thread busy for 10 seconds
+}
+console.log('end');  /
+```
+
+```bash
+start
+end
+after 5 sec
+```
+
+
+### setInterval
+
+```javascript
+var count = 0;
+const intervalId = setInterval(()=>{
+    count++;
+    console.log(`This is call number ${count}`);
+
+    if(count === 5){
+        clearInterval(intervalId);
+        console.log("Interval stopped");
+    }
+}, 1000);
+```
+
+```bash
+This is call number 1
+This is call number 2
+This is call number 3
+This is call number 4
+This is call number 5 
+Interval stopped
+
+```
+
+# JAVASCRIPT RUNTIME ENVIRONMENT 
+
+JS runtime environment contains all elements required to run JS. It includes:
+    - JS engine
+    - Callback queue
+    - Microtask queue
+    - Event loop
+    - set of APIs to connect to outer environment such as:
+        a.) **localStorage** - to access the local localStorage
+        b.) **console.log** - to print in outer/ console
+        c.) setTimeout
+
+        _These APIs have different implementation in different runtime environments._
+
+
+JS runtime environment can run everywhere - in browsers/ servers/ robots. NodeJS is open-source runtime environment.
+
+JS engine is a piece of code itself. Some examples are:
+        • google/chrome/nodejs - v8 ---> google v8 fastest JS engine (written in c++ )
+        • Firefox - SpiderMonkey -> First JS engine
+        • MS edge / Internet Explorer- Chakra
+        • Oracle JDK - Nashorn
+
+
+## JS engine
+
+1. JS engine takes human readable code as input and undergoes through 3 processes - Parsing, Compilation and Execution
+
+2. Parsing: There is syntax parser which converts code into token and converts to AST (Abstract Syntax Tree). eg: let a = 10 is broken down into 4 tokens. (Explore ASTs using [AST Explorer](https://astexplorer.net).)
+
+3. Modern JS engine follows JIT (Just In Time) compilation, it interprets while it optimizes code as much as it can.
+
+4. Execution and Compilation are done together. So JS can behave as an interpreted language as well as a compiled language depending on the JS engine. Initially, it was created as an interpreted language.
+
+   - An interpreter translates and executes code line by line, while a compiler translates the entire code into machine code before execution.
+   - In JavaScript, it is primarily interpreted.
+
+   In compiled languages, we have more efficiency, but for interpreted languages, it is faster as it doesn't have to wait to compile the whole code into machine code.
+
+   - However, modern JavaScript engines like V8 (in Chrome) use Just-In-Time (JIT) compilation to improve performance by compiling code into machine code during runtime. So, JS combines both techniques for optimal performance.
+
+   -> Now, parsed code goes through an interpreter/compiler which converts it into byte code/machine code.
+
+Execution: Memory Heap, Call Stack, and Garbage Collection.
+
+   -> Memory heap is also there in the JS engine. It is the space where all functions and variables are assigned memory.
+
+8. Execution has a Garbage Collector. It tries to free memory space whenever possible. It uses the Mark and Sweep algorithm.
+
+9. There are many other optimization techniques such as inlining, copy elision, inline caching, etc., which the compiler does for code.
+
+10. Basic idea about Mark & Sweep Algorithm. It comprises 2 phases:
+
+    1. **Mark phase**  
+    2. **Sweep phase**
+
+    All objects are marked as 0 initially (at creation), and in the mark phase, the objects that will be accessible are marked as 1 (reachable) by a DFS graph traversal. During the sweep phase, the objects marked with 0 are removed from heap memory. Also, all reachable objects are again initialized with 0 (made unreachable) because the algorithm will run again.
+
+
+#### Different compilation optimizations in JavaScript
+
+Key compiler optimizations include:
+    1. Inlining: Replacing function calls with the function code to reduce overhead.
+    2. Copy Elision: Eliminating unnecessary copying of objects, particularly in situations like returning objects from functions.
+    3. Inline Caching: Storing the result of an operation (like property lookup) after the first execution, so future lookups are faster by avoiding redundant work. Often used in dynamic languages to optimize property or method access.
+    4. Dead Code Elimination: Removing unused or unreachable code.
+    5. Constant Folding: Evaluating constant expressions at compile time.
+    6. Loop Unrolling: Reducing loop overhead by expanding loops.
+    7. Register Allocation: Efficiently using CPU registers to speed up access.
+    8. Common Subexpression Elimination: Reusing repeated calculations.
+    9. Peephole Optimization: Simplifying small sections of code for better performance.
+    10. Instruction Scheduling: Reordering instructions to avoid CPU delays.
+
+#### Difference b/w JIT and AOT compilation
+    
+JIT (Just-In-Time) Compilation and AOT (Ahead-Of-Time) Compilation are both methods of compiling code, but they differ in when and how the compilation happens:
+    • JIT Compilation:
+        ○ When: Compilation occurs at runtime.
+        ○ How: Code is compiled into machine code just before it's executed, which can optimize performance based on actual usage patterns.
+        ○ Example: JavaScript engines like V8 (in Chrome) use JIT compilation.
+    • AOT Compilation:
+        ○ When: Compilation occurs before runtime (at build time).
+        ○ How: Code is fully compiled into machine code ahead of time, making the execution faster since it’s already optimized.
+        ○ Example: Languages like Java or C++ typically use AOT compilation.
+        
+    **JIT compiles code at runtime, while AOT compiles code before runtime.**
+
+#### V8 engine
+
+• The name of V8 interpretter is ignition and turbofan is optimizing compiler of v8.
+• Garbage collector of V8 is orinoco which uses M & S algorithm.
+
+# ASYNCHRONOUS JAVASCRIPT AND EVENT LOOP
+
+Event loop is a mechanism in Javascript to handle asynchronous operations despite JS being synchronous single-threaded language. JS can can handle async operations with the help of callback functions, promises and async-await. While JS itself is synchronous it offloads time taking tasks such as fetching data, handling i/o operations, reading file to event loop. This allows rest of the code keep running without waiting for these tasks to finish. Once task is done, event loop picks the callback from callback queue and executes the callback or promise resolution, effectively handling tasks without blocking the main thread.
+
+Event loop is a mechanism in JS to handle asynchronous operations. It constantly checks the call stack. If it's empty , it pushes the callback to be executed from callback queue (or microtask queue) to call stack.
+
+### Stes of Execution - How JS code is executed?
+
+1. Creation of execution context - Each function call creates a new execution context, containing the code to execute and the variable scope.
+
+2. Call stack keep track of execution of thread of execution which are executed seuentially. Once the execution is done, that EC is popped out from the stack.
+
+3. Web APIs such as setTimeOut handle asynchronous operations.
+
+4. Event loop picks the task from microtask queue or callback queue if callstack is empty and executes the asynchronous tasks.
+
+#### Callback queue
+
+Whenever any asynchronous task is done (such as DOM events, HTTP requests,timers), its callback to be executed is placed in callback queue.
+
+#### Microtask queue / Priority queue
+
+Microtask queue holds the asynchronous task which are ready to be executed but has higher priority such as promises, mutation observers.
+
+#### Mutation observers
+
+It is JavaScript API that watches for changes in DOM / DOM manipulation (addition,updation or removal of DOM elements). It allows developers to react to changes in real-time without constant polling DOM.
+
+#### Starvation
+
+Starvation ocuurs when a task is perpetually delayed because higher priority taks takes precedence.
+
+Microtasks are given priority over callback queue tasks. Too many microtasks can cause starvation (not giving time to callback queue tasks to execute)
+
+
+#### Ques/Ans
+
+Q1. When does the event loop actually start?
+Ans. Event loop is a single-thread, loop that is `almost infinite`. It's always running and doing its job.
+
+Q2. Are only asynchronous web API callbacks are registered in web API environment?
+Ans. Yes, the synchronous callback functions like what we pass inside map, filter, and reduce aren't registered in the Web API environment. It's just those async callback functions that go through all this. 
+
+Q3. Does the web API environment stores only the callback function and pushes the same callback to queue/microtask queue? 
+Ans. Yes, the callback functions are stored, and a reference is scheduled in the queues. Moreover, in the case of event listeners(for example click handlers), the original callbacks stay in the web API environment forever, that's why it's advised to explicitly remove the listeners when not in use so that the garbage collector does its job.
+
+Q4. How eventlistener execution is done?
+```javascript
+console.log('start');
+document.getElementById('btn').addEventListener('click', () => {
+  console.log('clicked');
+});
+console.log('end');
+```
+
+Ans. -  First GEC is created, and synchronous code is executed immediately. start and end will be printed first. 
+     -  addEvenListener('click', callback) registers click event listener for btn element. Web API memory stores the event listener and waits for click event
+     -  When user click on button, Web Api detects event and move the callback to callback queue
+     -  Event Loop checks if call stack is empty, it moves the callback to be executed from callback queue to call stack.
+     -  After execution, its execution context is removed from call stack, but event listener stays in memory, waiting for future event unless removeEventListener is manually removed or the page is unloaded.
+
+Q5. How callback in setTimeOut and fetch is executed?
+
+```javascript
+console.log('start');
+setTimeout(() => { console.log('timer'); }, 0);
+fetch('https://example.com')
+  .then(response => response.json())
+  .then(data => console.log('call'));
+console.log('end');
+```
+
+Ans.-   First GEC is created, and synchronous code is executed immediately. start and end will be printed first.
+    -   The callback function from setTimeout is stored in the Web API (specifically in the timer part of the Web APIs) when the setTimeout function is called.
+    -   The Web API handles the countdown for the specified delay (e.g., 0ms in your case). It is not yet in the callback queue; it stays in the Web API's timer system.
+    -   The .then() or .catch() handlers attached to a fetch request are stored in the Web API (specifically in the Promise or Fetch API part of the Web APIs).
+    -   The Web API handles the network request and tracks its resolution.
+    -   After the specified delay has passed, the Web API moves the callback to the callback queue (task queue), but it doesn't execute until the event loop sees that the call stack is empty.
+    -   Once the fetch request completes (whether it succeeds or fails), the Web API moves the promise handlers (e.g., .then() or .catch()) to the microtask queue.
+    -   These handlers will not execute until after the call stack is empty, and after any already-pending microtasks are processed.
+    -   First, microtask queue task will be resolved and then callback queue task.
+
+    Final Output:
+
+    ```bash
+    start
+    end
+    call
+    timer
+    ```
+
+Q6.  If console a web API , then how console.log is synchronous ?
+
+Ans. Although console is part of the Web API in JavaScript, console.log() is synchronous because it directly interacts with the browser's console to log output immediately. It doesn't involve any asynchronous operations or require a callback, so it executes in the call stack immediately and doesn’t rely on the event loop or callback queue.
+
+Q7. How if else statement executes if js executes everything line by line ?
+
+Ans. JavaScript still executes everything line by line, but it uses conditions to decide which block of code to execute next, either the if block or the else block. This control flow doesn't disrupt the sequential nature of execution, it just adds a conditional path for which line of code gets executed next.
+
+Q8.  For the code below, when the timer starts , line 2 of settimeout or at the starting of code ?
+
+```javascript
+console.log('start');  // Logs 'start'
+
+setTimeout(function() {
+  console.log('callback - console("timeout")');  // Logs 'callback - console("timeout")' after 5 seconds
+}, 5000);
+
+console.log('end');  // Logs 'end' immediately
+```
+
+Ans. The timer for setTimeout() starts when the setTimeout() function is called (which is when JavaScript reaches line 2 in code), not at the beginning of the script.
+
+
+Q9.  Why we need callback queue , why cant we directly push into call stack from web API environment ?
+
+Ans. The callback queue is needed to prevent blocking the call stack. Directly pushing tasks from the Web API to the call stack would block synchronous code execution. The callback queue allows asynchronous tasks to wait until the call stack is empty, ensuring non-blocking execution and proper task prioritization by the event loop.
+
+Q10.  Is console web api?
+
+Ans. Yes, the console object is part of the Web API in JavaScript. It provides a simple interface to interact with the browser's developer console. The console object allows developers to log information, warnings, errors, and more, which is particularly useful for debugging and testing purposes.
+Some commonly used console methods include:
+    • console.log() – Used to log general information.
+    • console.error() – Used to log error messages.
+    • console.warn() – Used to log warnings.
+    • console.info() – Used to log informational messages.
+    • console.debug() – Used to log debug-level messages.
+    • console.table() – Used to display tabular data in a table format.
+These methods are supported by most modern web browsers and are part of the browser's JavaScript environment, making it a key component of the Web API for developers.
+
+
+# EVENT PROPAGATION
+
+Event propagation refers to the process by which events are handled by the DOM.
+
+There are 3 phases in event propagation.
+
+### Capturing Phase
+
+1. This phase begins at the top of DOM tree and travel downwards through ancestors of target element.
+2. Event Listeners registered in capturing phase handle event before it reaches the target element.
+
+### Target Phase
+
+1. This phase occurs when the event reaches the target element itself. At this point, event is being handled by element that was the actual recipient of event.
+
+### Bubbling phase
+
+1. This phase happens after the event reaches the target element.
+2. In event phase, the event bubbles up the DOM from target element to the root (document or window).
+3. Event listeners registered in bubble phase will handle the event as it bubbles back up through its acestors.
+4. By default, we have event bubbling, but we can set it as event capturing by setting it to true.
+5. Focus, Blur are few events which do not bubble.
+
+## Event Delegation
+
+Event delegation is a technique in JavaScript where you attach a single event listener to a parent element instead of adding individual event listeners to each child element.
+
+#### Benefits
+
+ • Efficiency: Instead of attaching event listeners to many child elements (which can be resource-intensive), you attach just one to a common parent, reducing memory usage and improving performance.
+
+ • Dynamic Content: It works well for dynamically added elements. Even if new child elements are added later, they will automatically be covered by the parent's event listener.
+
+```html
+<ul id="parent">
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+</ul>
+```
+    
+```javascript
+document.getElementById('parent').addEventListener('click', function(event) {
+  if (event.target.tagName === 'LI') {
+    console.log('List item clicked:', event.target.textContent);
+  }
+});
+```
+
+# CALLBACK HELL AND INVERSION OF CONTROL
+
+    • Synchronous code = Wait for each task to finish (executes line-by-line).
+    • Asynchronous code = Don't wait, move on to the next task while the current one is being processed.
+
+    ○ JavaScript always executes synchronous code first and then asynchronous.
+
+Callback function enables us to do async programming in JS. We use it for functions that are interdependent on each other for execution.
+
+### Callback Hell
+
+When a function is passed as an argument to another function, it is a callback function. When multiple callbacks are nested within each other, the code becomes hard to read, maintain, and debug (also called "callback hell" or "pyramid of doom").
+
+### Inversion of control
+
+The callback function is passed to another callback, this way we lose the control of our code. We don't know what is happening behind the scene and the program becomes very difficult to maintain. That process is called inversion of control.
+
+```javascript
+const cart = ["shoes", "pants", "kurta"];
+
+createOrder(cart , function() {
+    proceedToPayment(orderId);
+});
+```
+
+#### What are the issues?
+
+What might createOrder will never call our callback function proceedToPayment() ? What if it call it twice ? …and so on, we can't blindly trust that api. We are giving the control our code to another which we are not aware of even sometimes. It's very risy and not reliable.
+
+
+# PROMISES
+
+### Need for Promises
+
+The need for Promises arise from the challenges of handling asynchronous operations.
+
+Callback were traditionally used to handle asynchronous operations.
+Key Problems with callbacks were: Callback hell and inversion of control.
+
+Promise overcome with these drawbacks:
+
+    1. Callback Hell (Pyramid of doom) : By chaining promises(using .then), we can get rid of callback hell. With promise chaining our code expands vertically and not horizontally.
+    
+    2. Inversion of control : When we call a promise, we don’t have to pass in a callback; instead, we can chain .then() and .catch() methods, which makes it easier to control the flow of the code. Also, Promises are immutable, so they can't be altered.
+
+How Promises help? 
+    - Avoid callback hell & inversion control
+    - Clean code
+    - Unified mechanism for handling errors
+
+```javascript
+// using callback 
+
+createOrder(cart, function(){
+    proceedtoPayment(orderId);
+});
+
+// using promises
+
+createOrder(cart)
+.then(function(){
+return proceedToPayment(orderId);
+})
+```
+
+Using callback, we were passing our function as a callback function to another function and giving our control to that higher order function but now we are attaching the callback function to promise.
+
+Now, createOrder API will only do its job and initially promise data will be undefined until promise is pending and whenever promise gets fulfilled with data, it will automatically call the function attached to it. Promise gives the guarantee to call that function whenever it get the data and that also only once.
+
+### What is Promise
+
+A promise is an object that represents the eventual completion or failure of an asynchronous operation.
+
+It is basically a placeholder for a certain period of time for an asynchronous function.
+
+Promise has 3 states - pending, fulfilled, rejected.
+
+As soon as promise is fulfilled/rejected, it updates the empty object PromiseResult of promise which is assigned undefined in pending and PromiseState is updated to fulfilled or rejected.
+
+```javascript
+const GITHUB_API = "https://api.github.com/users/akash-midha"
+const user = fetch(GITHUB_API);
+
+// fetch returns a promise which is stored in user.
+```
+
+### Promise chaining
+
+Promise chaining is a technique where multiple .then() methods are linked together to perform a sequence of asynchronous operations.
+
+Each .then() returns a new promise, allowing to perform asynchronous actions in a linear, readable flow without nesting callbacks.
+
 
