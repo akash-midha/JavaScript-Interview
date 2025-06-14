@@ -1002,6 +1002,16 @@ var z = 4
 multiply(x, y, z);
 ```
 
+```javascript
+function print(a, b, c, ...nums){     // rest operator
+    console.log(a, b, c);
+    console.log(nums);
+}
+
+var arr = [1,2,3,4,5,6];
+print(...arr);   //spread operator
+```
+
 #### First class Functions
 
 The ability of a function to be treated as a value is the first class functions. In Js, functions are first class citizens.
