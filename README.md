@@ -1186,6 +1186,110 @@ A pure function is a function that adheres to the following two main principles:
     1. Deterministic: The function always produces the same output given the same input.
     2. No Side Effects: The function does not modify any external state or variables. It doesn't change anything outside of the function (e.g., no modifying global variables, no logging to the console, no writing to a file, no updating a database, etc.).
 
+### Map, Filter and Reduce
+
+#### Map
+
+Map method is used to create new array from existing ones, and transformation is done on new array.
+Map is a callback function with 3 arguments - currentvalue, index, array.
+
+```javascript
+const arr = [1,2,3,4,5];
+const multiplyby5 = arr.map((item,i,arr) => (item*5));
+console.log(multiplyby5);
+// multiplyby5 = [5,10,15,20,25]
+```
+**Map Polyfill**
+
+```javascript
+Array.prototype.myMap = function(cb){
+    let temp = [];
+    for(let i=0 ; i<this.length; i++){
+        temp.push(cb(this[i], i, this));
+    }
+    return temp;
+}
+
+const arr = [1,2,3,4,5];
+const multiplyby5 = arr.myMap((item,i,arr) => (item*5));
+console.log(multiplyby5);
+```
+
+#### Diff in Map and ForEach
+
+forEach doesn't return new array while map return another array. forEach is used to mutate the original array.
+
+forEach takes a callback function with 3 arguments - currentvalue, item, aray.
+
+We can chain in map as it returns another array but chaning can't be done on forEach.
+
+```javascript
+const arr = [1,2,3,4,5];
+const forEachArray = arr.forEach((item,i,arr)=>(arr[i] = item*5));
+consol.log(forEachArray); 
+// original array mutated but not returned any new array.
+//arr = [5,10,15,20,25]
+//forEachArray = undefined
+```
+
+#### Filter 
+
+Filter method is used to filter elements based on some condition and return new array containing elements that satisy that condition.
+
+Filter method takes callback function with 3 arguments - currentelement, index and array.
+
+```javascript
+const arr = [1,2,3,4,5];
+const elementsLessThanThree = arr.filter((item,i,arr) => (item<3));
+console.log(elementsLessThanThree);
+// elementsLessThanThree = [1,2]
+```
+**Filter Polyfill**
+
+```javascript
+Array.prototype.myFilter = function(cb){
+    let temp = [];
+    for(let i=0 ; i<this.length; i++){
+        if(cb(this[i], i, this)){
+            temp.push(this[i]);
+        }
+    }
+    return temp;
+}
+
+const arr = [1,2,3,4,5];
+const elementsLessThanThree = arr.myFilter((item,i,nums) => (item<3));
+console.log(elementsLessThanThree);
+// elementsLessThanThree = [1,2]
+```
+
+#### Reduce
+
+Reduce method is used to reduce the value of array to single value.
+Reduce takes a callback function and initialvalue for the accumulator.
+
+```javascript
+const nums = [1,2,3,4,5];
+
+const sum = nums.reduce((acc, curr, i, arr) => (acc = acc+curr), 0);
+console.log(sum); //15
+```
+
+**Reduce polyfill**
+
+```javascript
+Array.prototype.myReduce = function(cb, initialvalue){
+    let accumulator = initialvalue !== undefined ? initialvalue : this[0];
+    let sI =  initialvalue !== undefined ? 0 : 1;
+    for(let i=sI; i<this.length; i++){
+        accumulator = cb(accumulator, this[i],i,this);
+    }
+    return accumulator;
+}
+```
+
+
+
 ### setTimeout
 
 ```javascript
