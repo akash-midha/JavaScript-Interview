@@ -780,7 +780,7 @@ let x = 10;
 
 **Whenever a function is returned, even if its vanished from execution context but still it remembers the refrence it was pointing to.It is not only that function is returned but the entire closure.**
 
-Thus, a closure occurs when a function retains access to variables from its outer function even after the outer function has finished executing.
+Closure gives the access to an outer function scope from an inner function.
 
 Closures are stored physically in memory. When a closure is created, the function and lexical environments are stored together in memory so that the function can access these variables even when it is executed outside their original scope.
 
@@ -798,6 +798,23 @@ Every function has 3 scopes
 
 2. Closures capture all variables in the outer function scope, not just ones they need. This leads to unnecessarily retained memory and confusing debugging.
 
+#### Uses of Closure
+
+1.  Creating private functions.
+2.  Currying
+3.  Module Design Patterns
+4.  Memoization
+5.  Time Optimization
+
+
+#### Difference b/w closure and scope
+
+   | Aspect           | Scope                                      | Closure                                    |
+   |------------------|-------------------------------------------|-------------------------------------------|
+   | **Definition**   | Accessibility of variables in a specific part of the code. | A function that retains access to its lexical scope. |
+   | **When Created** | Determined at runtime.                    | Created when a function is defined.       |
+   | **Purpose**      | Controls variable visibility.             | Preserves data and state between function calls. |
+   | **Example**      | Variable access within a block or function. | Function accessing variables from its outer scope. |
 
 #### Example of Closure
 
@@ -867,6 +884,185 @@ x();
 5. Memoization
 6. Maintaing state in async world
 7. Functions like once
+
+##### Module Patterns
+
+Module Pattern in JavaScript, is a design pattern used to encapsulate private and public members within a function.
+
+Uses:
+1.  Encapsulation: Keeps private members hidden and exposes only what is necessary.
+2.  Avoids Global Scope Pollution: All variables and functions are scoped within the module.
+3.  Reusability: You can create multiple instances of the module if needed.
+
+## Currying
+
+**Currying** is a technique in functional programming where a function is transformed into a sequence of functions, each taking a single argument. 
+
+#### Benefits of Currying
+
+✅ It makes a function pure which makes it expose to less errors and side effects.
+✅ It helps in avoiding the same variable again and again.
+✅ It is a checking method that checks if you have all the things before you proceed.
+✅ It divides one function into multiple functions so that one handles one set of responsibility.
+
+#### Example of Currying:
+```javascript
+// Normal function
+function add(a, b) {
+    return a + b;
+}
+console.log(add(2, 3)); // Output: 5
+
+// Curried version of the same function
+function curriedAdd(a) {
+    return function (b) {
+        return a + b;
+    };
+}
+const addTwo = curriedAdd(2);
+console.log(addTwo(3)); // Output: 5
+console.log(curriedAdd(2)(3)); // Output: 5
+```
+
+## Objects
+
+Object is a collection of properties and each property is an association between key and value. The property's value can also be function.
+Object is created using curly brackets.
+
+```javascript
+const emptyObject = {};
+
+const user = {
+    name: 'Akash Midha',
+    age: 24,
+    "like the video": true
+};
+
+// Accessing properties
+console.log(user.name);   // Akash Midha
+console.log(user["like the video"]);
+
+//Modifying properties
+user.name = 'Sagar';
+console.log(user.name); //Sagar
+
+
+//deleting properties
+delete user.age;   //Age property will be deleted
+delete user["like the video"]; //like the video property will be deleted
+```
+
+#### Computed property names
+
+```javascript
+// Computed property names
+
+const property = "firstName";
+const name = "Akash Midha";
+
+const user = {
+    [property] : name,
+};
+console.log(user.firstName);
+```
+
+#### Looping through object
+
+```javascript
+const user = {
+    name: "Akash Midha",
+    age: 24,
+    city: "Delhi",
+    isEmployed: true
+}
+
+for(key in user){
+    console.log(`key:${key} value:${user[key]}`);
+}
+```
+
+
+#### JSON.stringify and JSON.parse
+
+JSON.stringify: Converts a JavaScript object into a JSON string.
+JSON.parse: Converts a JSON string back into a JavaScript object.
+
+
+UseCase: localStorage only stores strings, so you must JSON.stringify() objects before storing and JSON.parse() them when retrieving.
+
+```javascript
+const user = {
+    name: "Akash",
+    age: 24,
+}
+
+const strObj = JSON.stringify(user);
+console.log(strObj);
+localStorage.setItem("test", strObj);
+const jsonObj = JSON.parse(localStorage.getItem("test"));
+console.log(jsonObj);
+
+```
+
+#### Destructuring of objects
+
+```javascript
+const user = {
+    name: 'Akash Midha',
+    age: 24,
+    fullname: {
+        firstname: 'Akash',
+        lastname: 'Midha'
+    }
+}
+
+const name = 'Piyush';
+
+const {name : myName, age, fullname : {firstname, lastname}} = user;
+console.log(name, myName, age, fullname, firstname, lastname);
+```
+
+#### Shallow copy and Deep copy of object
+
+Shallow copy: Copies only the first level of the object — nested objects are shared.
+Deep copy: Copies everything, including nested objects — creates completely independent data.
+
+```javascript
+const user = {
+    name: 'Akash Midha',
+    age: 24,
+    fullname: {
+        firstname: 'Akash',
+        lastname: 'Midha'
+    }
+}
+
+const name = 'Piyush';
+
+const {name : myName, age, fullname : {firstname, lastname}} = user;
+console.log(name, myName, age, fullname, firstname, lastname);
+```
+
+How to deep copy / clone an object ?
+
+```javascript
+let user = {
+    name: "Akash Midha",
+    age: 24,
+}
+
+//method - 1 -> two params, target and to be cloned
+const objClone = Object.assign({}, user);
+
+//method - 2 -> stringify and parse
+
+const objClone2 = JSON.parse(JSON.stringify(user));
+
+//method - 3 -> destructuring
+
+const objClone3 = {...user};
+
+```
 
 
 ## FIRST CLASS FUNCTIONS
@@ -975,6 +1171,10 @@ const merged = [...arr1, ...arr2]; // [1, 2, 3, 4]
 const obj = { a: 1, b: 2 };
 const newObj = { ...obj, c: 3 };
 console.log(newObj); // { a: 1, b: 2, c: 3 }
+```
+
+```javascript
+console.log([..."Lydia"]);  // ['L', 'y', 'd', 'i', 'a'] 
 ```
 
 **Rest operator is used to collect remaining elements of array or object.**
