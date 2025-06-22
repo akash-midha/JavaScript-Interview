@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
     <h1 id="'heading">This is JavaScript Learning.</h1>
-    <script src="1_var_let_const.js"></script>
+
+
+    <!-- Event Propagation -->
+    <div class="event" id="event_div">DIV
+        <form class="event" id="event_form">FORM
+            <button class="event" id="event_button">BUTTON</button>
+        </form>
+    </div>
+
+    <div id="list-item">
+        <li id="list1">List 1</li>
+        <li id="list2">List 2</li>
+        <li id="list3">List 3</li>
+        <li id="list4">List 4</li>
+        <li id="list5">List 5</li>
+        <li id="list6">List 6</li>
+
+
+        <!-- Debouncing and Throttling -->
+        <button class="debouce_btn">Click Button</button>
+        <p>Button pressed <span class="debounce_pressed">0</span> times</p>
+        <p>Button triggered <span class="debounce_triggered">0</span>times</p>
+    </div>
+    <script src="10_2_Throttling.js"></script>
 </body>
+
 </html>

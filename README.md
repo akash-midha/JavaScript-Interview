@@ -1814,54 +1814,6 @@ Some commonly used console methods include:
 These methods are supported by most modern web browsers and are part of the browser's JavaScript environment, making it a key component of the Web API for developers.
 
 
-# EVENT PROPAGATION
-
-Event propagation refers to the process by which events are handled by the DOM.
-
-There are 3 phases in event propagation.
-
-### Capturing Phase
-
-1. This phase begins at the top of DOM tree and travel downwards through ancestors of target element.
-2. Event Listeners registered in capturing phase handle event before it reaches the target element.
-
-### Target Phase
-
-1. This phase occurs when the event reaches the target element itself. At this point, event is being handled by element that was the actual recipient of event.
-
-### Bubbling phase
-
-1. This phase happens after the event reaches the target element.
-2. In event phase, the event bubbles up the DOM from target element to the root (document or window).
-3. Event listeners registered in bubble phase will handle the event as it bubbles back up through its acestors.
-4. By default, we have event bubbling, but we can set it as event capturing by setting it to true.
-5. Focus, Blur are few events which do not bubble.
-
-## Event Delegation
-
-Event delegation is a technique in JavaScript where you attach a single event listener to a parent element instead of adding individual event listeners to each child element.
-
-#### Benefits
-
- • Efficiency: Instead of attaching event listeners to many child elements (which can be resource-intensive), you attach just one to a common parent, reducing memory usage and improving performance.
-
- • Dynamic Content: It works well for dynamically added elements. Even if new child elements are added later, they will automatically be covered by the parent's event listener.
-
-```html
-<ul id="parent">
-  <li>Item 1</li>
-  <li>Item 2</li>
-  <li>Item 3</li>
-</ul>
-```
-    
-```javascript
-document.getElementById('parent').addEventListener('click', function(event) {
-  if (event.target.tagName === 'LI') {
-    console.log('List item clicked:', event.target.textContent);
-  }
-});
-```
 
 # CALLBACK HELL AND INVERSION OF CONTROL
 
@@ -1954,5 +1906,95 @@ const user = fetch(GITHUB_API);
 Promise chaining is a technique where multiple .then() methods are linked together to perform a sequence of asynchronous operations.
 
 Each .then() returns a new promise, allowing to perform asynchronous actions in a linear, readable flow without nesting callbacks.
+
+
+
+# EVENT PROPAGATION
+
+Event propagation refers to the process by which events are handled by the DOM.
+
+There are 3 phases in event propagation.
+
+### Capturing Phase
+
+1. This phase begins at the top of DOM tree and travel downwards through ancestors of target element.
+2. Event Listeners registered in capturing phase handle event before it reaches the target element.
+3. Event capturing is also known as event trickling.
+
+### Target Phase
+
+1. This phase occurs when the event reaches the target element itself. At this point, event is being handled by element that was the actual recipient of event.
+
+### Bubbling phase
+
+1. This phase happens after the event reaches the target element.
+2. In event phase, the event bubbles up the DOM from target element to the root (document or window).
+3. Event listeners registered in bubble phase will handle the event as it bubbles back up through its acestors.
+4. By default, we have event bubbling, but we can set it as event capturing by setting it to true.
+5. Focus, Blur are few events which do not bubble.
+
+**3-phase model:**
+Capture Phase → DOM tree top → down to the target
+Target Phase → Event hits the actual target element
+Bubble Phase → Event bubbles up from target to root
+
+### How to stop event capturing or bubbling?
+
+by setting e.stopPropagation() to the event where we want to stop.
+
+
+## Event Delegation
+
+Event delegation is a technique in JavaScript where you attach a single event listener to a parent element instead of adding individual event listeners to each child element.
+
+#### Benefits
+
+ • Efficiency: Instead of attaching event listeners to many child elements (which can be resource-intensive), you attach just one to a common parent, reducing memory usage and improving performance.
+
+ • Dynamic Content: It works well for dynamically added elements. Even if new child elements are added later, they will automatically be covered by the parent's event listener.
+
+```html
+<ul id="parent">
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+</ul>
+```
+    
+```javascript
+document.getElementById('parent').addEventListener('click', function(event) {
+  if (event.target.tagName === 'LI') {
+    console.log('List item clicked:', event.target.textContent);
+  }
+});
+```
+
+### event.currentTarget vs this vs event.target
+
+| Property             | Refers To                              | Common Use Case                                               |
+|----------------------|-----------------------------------------|----------------------------------------------------------------|
+| `event.target`        | The element that was **clicked**         | Knowing what **triggered** the event                           |
+| `event.currentTarget` | The element the **handler is bound to** | Knowing where the **event listener was attached**              |
+| `this` (in function)  | Same as `event.currentTarget`           | Accessing the current element inside a **normal function**     |
+
+
+# DEBOUNCING AND THROTTLING
+
+## Debouncing
+
+1.  Debouncing ensures that function is called only once after a cerain period of time has passed since the last call, even if it is triggered multiple times in succession.
+
+2.  It's useful when we want to limit the number of times an event handler runs, such as limiting API calls while user is typing or resizing the window.
+
+3. Example: In search input field, we want to send request only when user stope typing for 300-400ms instead of every typestroke.
+
+
+## Throttling
+
+1. Throttling ensures that function is called at regular intervals , no matter how frequently it is triggered.
+
+2. Example- in scroll event, we want to execute function once every 100ms even if user is continuously scrollling.
+
+
 
 
