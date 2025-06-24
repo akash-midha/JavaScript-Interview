@@ -1843,7 +1843,7 @@ createOrder(cart , function() {
 #### What are the issues?
 
 What might createOrder will never call our callback function proceedToPayment() ? What if it call it twice ? …and so on, we can't blindly trust that api. We are giving the control our code to another which we are not aware of even sometimes. It's very risy and not reliable.
-
+ 
 
 # PROMISES
 
@@ -1994,6 +1994,78 @@ document.getElementById('parent').addEventListener('click', function(event) {
 1. Throttling ensures that function is called at regular intervals , no matter how frequently it is triggered.
 
 2. Example- in scroll event, we want to execute function once every 100ms even if user is continuously scrollling.
+
+# JavaScript Arrays: Holey vs Continuous & Element Types
+
+JavaScript arrays are flexible but their performance is deeply tied to **structure** (holey vs continuous) and **element type** (SMI, Double, Object). JavaScript engines like V8 use different internal representations based on these factors, which affects speed and memory usage.
+
+---
+
+## 🔹 Array Structure Types
+
+### 1. Continuous Array
+- No missing elements.
+- Optimized for performance.
+- Internally packed tightly in memory.
+
+**Example:**
+```js
+const arr = [1, 2, 3, 4]; // Continuous
+```
+
+### 2. Holey Array
+- Has missing (empty) slots—also called holes.
+- Disables some engine optimizations.
+- Introduced by skipping elements, using delete, or assigning beyond current length without filling gaps.
+
+**Example:**
+```js
+const arr = [1, , 3]; // Hole at index 1
+```
+
+#### How holes do occur?
+
+```js
+// Skipping elements in array literal:
+const arr = [1, , 2];
+
+
+// Using delete on array index:
+const arr = [1, 2, 3];
+delete arr[1]; // arr becomes [1, <empty>, 3]
+
+
+// Assigning value at an index far beyond the current length:
+const arr = [1];
+arr[100] = 5; // holes between 1 and 100
+
+// Initialization
+const arr = new Array(3); // this is holey array 
+const arr = []; //continuous array
+```
+
+## Element Types in Array
+
+| Type             | Description                    | Example            |
+| ---------------- | ------------------------------ | ------------------ |
+| **SMI**          | Small integers (32-bit signed) | `[1, 2, 3]`        |
+| **Double**       | Floating-point numbers         | `[1.1, 2.5, 3.0]`  |
+| **Object/Mixed** | Strings, objects, mixed types  | `[1, "a", {x: 1}]` |
+
+
+### Combined Performance Matrix
+
+| Array Type          | Example          | Performance | Notes                             |
+| ------------------- | ---------------- | ----------- | --------------------------------- |
+| Continuous + SMI    | `[1, 2, 3]`      | ✅ Fast      | Most optimized case               |
+| Continuous + Double | `[1.1, 2.2]`     | ✅ Fast      | Slightly less than SMI            |
+| Continuous + Object | `[1, "a", {}]`   | ⚠️ Medium   | Optimized less due to mixed types |
+| Holey + SMI         | `[1, , 3]`       | ❌ Slow      | Holes prevent fast access         |
+| Holey + Double      | `[1.1, , 3.3]`   | ❌ Slow      | Holes + double = worst case       |
+| Holey + Object      | `["a", , {x:1}]` | ❌ Slow      | Mixed types + holes = poor perf   |
+
+
+
 
 
 
