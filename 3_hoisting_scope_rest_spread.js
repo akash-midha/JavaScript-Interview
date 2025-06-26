@@ -11,7 +11,6 @@ function displaySquare(cb) {
 
 displaySquare(square);
 
-
 // ------------------------------------------Question-------------------------------------------
 // Give example of IIFE
 
@@ -69,6 +68,8 @@ var fun = function () {
 
 fun();
 
+//ans - undefined
+
 
 // ------------------------------------------Question-------------------------------------------
 // Ques based on rest / spread
@@ -97,13 +98,18 @@ print(...arr);   //spread operator
 const fn = (a, x, y, ...numbers) => {
     console.log(a, x, y, numbers);
 }
-let arr = [1, 2];
-fn(5, 6, ...arr, 3, 7, 8, 9);
+let arr2 = [1, 2];
+fn(5, 6, ...arr2, 3, 7, 8, 9);
+
+
+//Ans - 5,6,1,[2,3,7,8,9]
+
 
 
 // ------------------------------------------Question-------------------------------------------
 // Ques based on this
 
+var username = 'Sagar';
 
 let user = {
     username: "Akash",
@@ -117,3 +123,6 @@ let user = {
 
 user.rc1();
 user.rc2();
+
+// Arrow functions do not have their own this, they use this of enclosing function (here it is global scope.)
+//strict mode - non-strict mode
