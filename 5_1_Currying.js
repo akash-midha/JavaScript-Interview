@@ -1,5 +1,9 @@
 // Currying Example
-// Conver function f(a,b) to f(a)(b)
+// Write the function f(a,b) to f(a)(b)
+
+// What is currying?
+
+// Currying is a technique in functional programming where a function is transformed into sequence of functions each taking one argument.
 
 function withoutCurrying(a, b) {
     return a + b;
@@ -54,7 +58,29 @@ function infiniteCurryingSum(a) {
     }
 }
 
-console.log(infiniteCurryingSum(2)(3)(5)(8));
+console.log(infiniteCurryingSum(2)(3)(5)(8)());
+
+// It will work only if we pass a last empty call for infiniteCurryingSum(2)(3)(5)(8), it will return function
+
+
+// How to fix?
+
+function infiniteCurry2(a){
+    function inner(b){
+        a+=b;
+        return inner;
+    }
+
+    inner.toString = function(){
+        return a;
+    }
+
+    inner.valueOf = function(){
+        return a;
+    }
+
+    return inner;
+}
 
 
 // --------------------------------------------Ques-------------------------------------------
@@ -86,24 +112,3 @@ function updateElementText(id) {
 
 const updateText = updateElementText('heading');
 updateText('JavaScript');
-
-
-// --------------------------------------------Ques-------------------------------------------
-// Implement curry - Convert function f(a,b,c) to f(a)(b)(c)
-
-function curry(func) {
-    return function curriedFunc(...args) {
-        if (args.length >= func.length) {
-            return func(...args)
-        }
-        else {
-            return function (...next) {
-                return curriedFunc(...args, ...next);
-            }
-        }
-    }
-}
-
-const sum = (a,b,c) => a+b+c;
-const totalSum = curry(sum);
-console.log(`Currying Function to convert f(a,b,c) into f(a)(b)(c) - totalSum ${totalSum(1)(2)(3)}`);

@@ -153,7 +153,7 @@ let promise = job2(true);
 promise
     .then(function (data) {
         console.log(data);
-        return job2(true); 
+        return job2(true);
     })
     .then(function (data) {
         if (data != 'victory') {
@@ -187,4 +187,25 @@ promise
         console.log("Error:", data.message);
     })
 
-    //success, Defeat, error, Error caught, Success: test
+//success, Defeat, error, Error caught, Success: test
+
+
+
+//// ----------------------------------------------Ques--------------------------------------------
+
+
+const promise11 = Promise.resolve('First');
+const promise22 = Promise.resolve('Second');
+const promise33 = Promise.reject('Third');
+const promise44 = Promise.resolve('Fourth');
+
+const runPromises = async () => {
+    const res1 = await Promise.all([promise11, promise22]);
+    const res2 = await Promise.all([promise33, promise44]);
+    return [res1, res2];
+};
+
+runPromises()
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+

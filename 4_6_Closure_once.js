@@ -1,4 +1,4 @@
-// Make a function such that it print something once only
+// Make a function such that it print something once only.
 
 function printOnce() {
     let called = 0;
@@ -23,9 +23,9 @@ callOnce();
 function once(func, context) {
     let ran;
 
-    return function () {
+    return function (...args) {
         if (func) {
-            ran = func.apply(context || this, arguments);
+            ran = func.apply(context || this, args);
             func = null;
         }
         return ran;
@@ -36,4 +36,3 @@ const hello = once((a, b) => console.log("hello", a, b));
 hello(1, 2);
 hello(3, 4);
 hello(4, 5);
-

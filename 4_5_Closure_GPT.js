@@ -16,7 +16,6 @@ fn();
 // Since fn retains access to the same count variable via closure, it continues updating the same value.
 
 
-
 //Ques - implement a counter using closures so that it behaves like this:
 
 const counter = createCounter();
@@ -141,6 +140,5 @@ function buildFunctions() {
             });
         })(i);
     }
-
     return arr;
 }

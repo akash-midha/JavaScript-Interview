@@ -25,7 +25,7 @@ getItems(["banana", "apple"], "pear", "orange");
 
 
 function getItems(fruitList, favouriteFruit, ...args){
-    return [...fruitList, ...args, favouriteFruit]
+    return [...fruitList, ...args, favouriteFruit]  //here args = 
 }
 
 getItems(["banana", "apple"], "pear", "orange");  
@@ -33,6 +33,7 @@ getItems(["banana", "apple"], "pear", "orange");
 
 //Ans -
 // ...args capture remaining arguments , so ...args = ["orange"]
+// args = ["orange"], we again spreading it - ...args = "orange"
 // ["banana", "apple", "orange", "pear"]
 
 
@@ -54,7 +55,6 @@ console.log(d.greeting);
 // ------------------------------------------Ques----------------------------------------------------------------
 // Find output 
 
-/
 console.log({a: 1} == {a:1});
 console.log({a: 1} === {a:1});
 
@@ -77,7 +77,7 @@ console.log(members);
 
 
 // ------------------------------------------Ques----------------------------------------------------------------
-// Find output 
+// Find output   IMPORTANT
 
 const value = {number: 10};
 
