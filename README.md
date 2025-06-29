@@ -1907,6 +1907,34 @@ Promise chaining is a technique where multiple .then() methods are linked togeth
 
 Each .then() returns a new promise, allowing to perform asynchronous actions in a linear, readable flow without nesting callbacks.
 
+## Promise Combinators
+
+Promise combinators are utility methods that help handle multiple promises simultaneously. They return a single promise that behaves based on the input promises' resolution or rejection.
+
+### Promise.all
+- Resolves when **all promises resolve**.
+- Rejects if **any one promise rejects**.
+- Returns an array of resolved values in the same order.
+
+### Promise.allSettled
+- Resolves when all promises settle (either resolve or reject).
+- Returns an array of objects with { status, value } or { status, reason }.
+- never reject
+
+### Promise.race
+- Settles as soon as any promise settles (either resolves or rejects).
+- If first promise fulfill promise.race fulfill, if it is rejecte , promise.race is rejected
+- Returns the value or reason from the first settled promise.
+
+| Combinator           | Resolves When  | Rejects When      | Returns                                  |
+| -------------------- | -------------- | ----------------- | ---------------------------------------- |
+| `Promise.all`        | All resolved   | Any one rejected  | Array of resolved values                 |
+| `Promise.allSettled` | All settled    | Never             | Array of `{ status, value/reason }`      |
+| `Promise.race`       | First settled  | First is rejected | Value or reason of first settled         |
+| `Promise.any`        | First resolved | All rejected      | First resolved value or `AggregateError` |
+
+
+
 
 
 # EVENT PROPAGATION
