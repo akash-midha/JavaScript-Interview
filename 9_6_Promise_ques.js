@@ -209,3 +209,73 @@ runPromises()
     .then(res => console.log(res))
     .catch(err => console.log(err));
 
+
+
+
+// Ques
+
+console.log("start");
+
+setTimeout(() => {
+    console.log("setTimeout");
+}, 0);
+
+Promise.resolve()
+    .then(() => {
+        console.log("promise1");
+    })
+    .then(() => {
+        console.log("promise2");
+    });
+
+console.log("end");
+
+
+//start
+// end
+// promise1
+// promise2
+// setTimeout
+
+Promise.resolve()
+    .then(() => {
+        console.log("promise1");
+        return new Promise((res) => setTimeout(res, 1000));
+    })
+    .then(() => {
+        console.log("promise2");
+    });
+
+
+//promise1
+// 1 second later
+// promise2
+
+
+
+// IMPORTANT
+
+console.log("start");
+
+setTimeout(() => {
+  console.log("setTimeout");
+}, 0);
+
+Promise.resolve()
+  .then(() => {
+    console.log("promise1");
+  })
+  .then(() => {
+    setTimeout(() => {
+      console.log("setTimeout inside promise");
+    }, 0);
+  });
+
+console.log("end");
+
+// start
+// end
+// promise1
+// setTimeout
+// setTimeout inside promise
+

@@ -1907,6 +1907,47 @@ Promise chaining is a technique where multiple .then() methods are linked togeth
 
 Each .then() returns a new promise, allowing to perform asynchronous actions in a linear, readable flow without nesting callbacks.
 
+
+### What is the difference between Promise.resolve() and new Promise() in JavaScript?
+
+Promise.resolve quickly returns a resolved promise with the given value.
+```js
+Promise.resolve(5).then(console.log); // 5
+```
+
+new Promise(executor) creates a new custom promise that needs manual resolution or rejection using resolve and reject inside the executor.
+new Promise() gives control over asynchronous logic.
+
+```js
+new Promise((resolve, reject) => {
+  setTimeout(() => resolve(10), 1000);
+}).then(console.log); // 10 (after 1 sec)
+```
+
+### What is the difference between .then() and .catch() in Promises? Can we use .catch() in place of the second argument of .then()?
+
+.then(onFulfilled, onRejected): takes two optional arguments:
+onFulfilled: called when the promise is resolved
+onRejected: called when the promise is rejected
+
+```js
+promise.then(
+  (res) => console.log("Resolved:", res),
+  (err) => console.log("Rejected:", err)
+);
+```
+
+.catch(onRejected):
+Is just syntactic sugar for .then(null, onRejected)
+Used only to handle rejections
+
+```js
+promise
+  .then((res) => console.log("Resolved:", res))
+  .catch((err) => console.log("Caught:", err));
+```
+
+
 ## Promise Combinators
 
 Promise combinators are utility methods that help handle multiple promises simultaneously. They return a single promise that behaves based on the input promises' resolution or rejection.
@@ -1973,7 +2014,7 @@ by setting e.stopPropagation() to the event where we want to stop.
 
 ## Event Delegation
 
-Event delegation is a technique in JavaScript where you attach a single event listener to a parent element instead of adding individual event listeners to each child element.
+Event delegation is a technique in JavaScript where you attach a single event listener to a parent element instead of adding individual event listeners to each child element. The parent element handles events triggered by its child elements using event bubbling.
 
 #### Benefits
 

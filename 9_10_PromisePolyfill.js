@@ -57,7 +57,7 @@ function PromisePolyfill(executor) {
 const examplePromise = new PromisePolyfill((resolve, reject) => {
     setTimeout(() => {
         resolve('Promise resolved');
-    }, 1000);
+    }, 1000); 0
 });
 
 examplePromise
