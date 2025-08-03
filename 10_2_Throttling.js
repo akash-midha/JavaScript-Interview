@@ -3,8 +3,6 @@
 // Show button triggered y times after every 500ms
 
 
-
-
 // Throttle Polyfill
 
 const throttle = (cb, delay) => {

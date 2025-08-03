@@ -45,7 +45,6 @@ console.log(calculate('subtract')(4)(2));
 console.log(calculate('product')(4)(2));
 console.log(calculate('product')(4)(2));
 
-
 // --------------------------------------------Ques-------------------------------------------
 // Infinite Currying - It should be flexible with any no of inputs
 
@@ -65,19 +64,15 @@ console.log(infiniteCurryingSum(2)(3)(5)(8)());
 
 // How to fix?
 
-function infiniteCurry2(a){
-    function inner(b){
-        a+=b;
+function infiniteCurry2(a) {
+    function inner(b) {
+        a += b;
         return inner;
     }
 
-    inner.toString = function(){
-        return a;
-    }
+    inner.toString = () => a;
 
-    inner.valueOf = function(){
-        return a;
-    }
+    inner.valueOf = () => a;
 
     return inner;
 }

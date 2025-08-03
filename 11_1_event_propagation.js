@@ -31,13 +31,12 @@ function eventFuncStop(event) {
 }
 
 
-// Event Delegation
+// // Event Delegation
 
 const listid = document.getElementById('list-item');
 listid.addEventListener('click', function () {
     if (event.target.tagName == 'LI') {
-        window.location.href += "/" + event.target.textContent;
-        console.log(event.target.textContent);
+        alert(event.target.textContent);
     }
 })
 

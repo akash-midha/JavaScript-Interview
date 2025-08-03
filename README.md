@@ -1843,7 +1843,7 @@ createOrder(cart , function() {
 #### What are the issues?
 
 What might createOrder will never call our callback function proceedToPayment() ? What if it call it twice ? …and so on, we can't blindly trust that api. We are giving the control our code to another which we are not aware of even sometimes. It's very risy and not reliable.
- 
+
 
 # PROMISES
 
@@ -1883,7 +1883,7 @@ return proceedToPayment(orderId);
 Using callback, we were passing our function as a callback function to another function and giving our control to that higher order function but now we are attaching the callback function to promise.
 
 Now, createOrder API will only do its job and initially promise data will be undefined until promise is pending and whenever promise gets fulfilled with data, it will automatically call the function attached to it. Promise gives the guarantee to call that function whenever it get the data and that also only once.
-
+c
 ### What is Promise
 
 A promise is an object that represents the eventual completion or failure of an asynchronous operation.
@@ -1950,7 +1950,7 @@ promise
 
 ## Promise Combinators
 
-Promise combinators are utility methods that help handle multiple promises simultaneously. They return a single promise that behaves based on the input promises' resolution or rejection.
+Promise combinators are utility methods that help handle multiple promises simultaneously. They return a single promise that behaves based on the input promises resolution or rejection.
 
 ### Promise.all
 - Resolves when **all promises resolve**.
@@ -1976,8 +1976,6 @@ Promise combinators are utility methods that help handle multiple promises simul
 
 
 
-
-
 # EVENT PROPAGATION
 
 Event propagation refers to the process by which events are handled by the DOM.
@@ -1998,7 +1996,7 @@ There are 3 phases in event propagation.
 
 1. This phase happens after the event reaches the target element.
 2. In event phase, the event bubbles up the DOM from target element to the root (document or window).
-3. Event listeners registered in bubble phase will handle the event as it bubbles back up through its acestors.
+3. Event listeners registered in bubble phase will handle the event as it bubbles back up through its ancestors.
 4. By default, we have event bubbling, but we can set it as event capturing by setting it to true.
 5. Focus, Blur are few events which do not bubble.
 
@@ -2055,8 +2053,7 @@ document.getElementById('parent').addEventListener('click', function(event) {
 
 2.  It's useful when we want to limit the number of times an event handler runs, such as limiting API calls while user is typing or resizing the window.
 
-3. Example: In search input field, we want to send request only when user stope typing for 300-400ms instead of every typestroke.
-
+3. Example: In search input field, we want to send request only when user stop typing for 300-400ms instead of every typestroke.
 
 ## Throttling
 
@@ -2134,7 +2131,46 @@ const arr = []; //continuous array
 | Holey + Object      | `["a", , {x:1}]` | ❌ Slow      | Mixed types + holes = poor perf   |
 
 
+# COMPOSE AND PIPE
 
+## COMPOSE
+
+1. Compose is a function which takes multiple functions as arguments and returns a new function that is the composition of those functions.
+
+2. The order of composition is from right to left, meaning that the rightmost function is executed first, and its result is passed as an argument to the next function to its left.
+
+### Syntax of Compose
+
+```js
+const compose = (...functions) => input => functions.reduceRight((acc, fn) => fn(acc), input);
+```
+
+## PIPE
+
+1. Pipe is a function which takes functions as arguments and return a new function which is composition of these functions.
+
+2. The order of composition of these functions is from left to right, which means leftmost function is executed first and its result is passed an argument to next function on its right.
+
+### Syntax of Pipe
+
+```js
+const pipe = (...functions) => input => functions.reduce((acc, fn) => fn(acc), input);
+```
+
+### Key Differences
+
+```js
+const addTwo = (x) => x+2;
+const double = (x) => x*2;
+
+const pipeAns = pipe(addTwo, double);
+pipeAns(5);  // 14
+
+
+const composeAns = compose(addTwo, double);
+composeAns(5);  //12
+
+```
 
 
 

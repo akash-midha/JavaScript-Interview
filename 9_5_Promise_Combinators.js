@@ -16,7 +16,9 @@ const pr3 = new Promise((resolve, reject) => {
     }, 1000);
 });
 
-// Promise.All()
+const pr4 = Promise.resolve('Resolved quickly');
+
+
 const PromiseAllResult = Promise.all([pr1, pr2, pr3]);
 PromiseAllResult
     .then((ans) => console.log(ans))

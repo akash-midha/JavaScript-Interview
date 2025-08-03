@@ -14,26 +14,22 @@ function curry(func) {
     }
 }
 
-function curry(func){
-
-}
-
 const sum = (a, b, c) => a + b + c;
 const totalSum = curry(sum);
 console.log(`Currying Function to convert f(a,b,c) into f(a)(b)(c) - totalSum ${totalSum(1)(2)(3)}`);
 
-
-function currying(func){
-    return function curriedFunction(...args){
+function currying (func){
+    return function curriedFunc(...args){
         if(args.length >= func.length){
             return func(...args);
         }
         else{
-            return func
+            return function(...next){
+                
+            }
         }
     }
 }
-
 
 
 /*
