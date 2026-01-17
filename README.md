@@ -784,8 +784,6 @@ Closure gives the access to an outer function scope from an inner function.
 
 Closures are stored physically in memory. When a closure is created, the function and lexical environments are stored together in memory so that the function can access these variables even when it is executed outside their original scope.
 
-Closures are created everytime when function is created.
-
 Every function has 3 scopes
     - Local scope (its own scope)
     - Outer functions scope
