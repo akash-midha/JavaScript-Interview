@@ -2140,6 +2140,14 @@ const arr = []; //continuous array
 ### Syntax of Compose
 
 ```js
+function compose(...functions) {
+  return function (input) {
+    return functions.reduceRight(function (acc, fn) {
+      return fn(acc);
+    }, input);
+  };
+}
+
 const compose = (...functions) => input => functions.reduceRight((acc, fn) => fn(acc), input);
 ```
 
@@ -2152,6 +2160,14 @@ const compose = (...functions) => input => functions.reduceRight((acc, fn) => fn
 ### Syntax of Pipe
 
 ```js
+function pipe(...functions) {
+  return function (input) {
+    return functions.reduce(function (acc, fn) {
+      return fn(acc);
+    }, input);
+  };
+}
+
 const pipe = (...functions) => input => functions.reduce((acc, fn) => fn(acc), input);
 ```
 
