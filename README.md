@@ -588,7 +588,8 @@ console.log(a);   //50
 |---------------------|--------------------------------------------------------------------------------------|------------------------------------|------------------------------------------------------------------------------|
 | **Syntax Error**     | When the JavaScript code is not written in proper syntax. Similar to compilation error                           | `console.log("Hello"`              | Missing closing parenthesis or bracket. Code won’t run at all.              |
 | **Reference Error**  | When trying to access a variable that hasn’t been declared.                         | `console.log(x); // x not defined` | Variable is not in scope or not declared.                                   |
-| **Type Error**       | When a value is not of the expected type or an operation is done on the wrong type. (eg- re-initializing const variable) | `null.toUpperCase()`              | Performing invalid operations on a type.                                    |
+| **Type Error**       | When a value i not of the expected type or an operation is done on the wrong type. (eg- re-initializing const variable) | `null.toUpperCase()`              | Performing invalid operations on a type.                                    |
+
 
 
 ```javascript
