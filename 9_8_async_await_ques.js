@@ -10,6 +10,5 @@ async function test() {
 
 test().then(console.log);
 
-
 //   Caught: Oops!
 //   Done
