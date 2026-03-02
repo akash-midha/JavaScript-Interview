@@ -15,6 +15,7 @@ const debounce = (cb, delay) => {
     }
 }
 
+
 const button = document.querySelector('.debouce_btn');
 const btn_pressed = document.querySelector('.debounce_pressed');
 const btn_triggered = document.querySelector('.debounce_triggered');
