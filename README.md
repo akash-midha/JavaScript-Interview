@@ -559,9 +559,20 @@ The output is:
 | Use Case                     | Legacy code, avoid in modern JS      | Preferred for variables that change   | Preferred for constants (no reassignment) |
 
 > 🔹 **Note:** `const` does not mean immutable. For objects/arrays declared with `const`, properties/elements can still be changed.
+
 => **const is only assignment immutable.**
+const != immutable.
+const prevents reassignment of the binding, not mutation of the referenced object.
+
+const [count, setCount] = useState(0);
+setCount(...)
+
+Here it doesn't mutate the existing binding. React gives a new state in each render.
+
+
 => When there is syntax error, not even one line of code is executed. It is compilation error.
-=> ReferenceError and TypeErrror are runtime errors and caught in betweeen
+
+=> ReferenceError and TypeErrror are runtime errors and caught in between.
 
 
 Level of strictness: var < let < const
