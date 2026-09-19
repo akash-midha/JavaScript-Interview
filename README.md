@@ -1247,12 +1247,32 @@ IIFE runs as soon as it is defined.
 }(3))
 ```
 
+#### This in JS
+
+This in JS represents a special keyword that represents the object / context associated with the current function call.
+
+For a normal function, this is determined by HOW the function is called.
+
+```js
+const user = {
+  name: "Akash",
+
+  greet() {
+    console.log(this.name);
+  }
+};
+
+user.greet();  //Akash
+```
+
 #### Arrow Functions
 
 Arrow functions are concise syntax for writing functions introduced in ES6.
 
 Implicit return: For single-expression functions, we can omit the return keyword and the curly braces.
 Arrow Functions cannot be used as constructors: cannot use new with arrow functions.
+
+In non-strict browser JavaScript, this can refer to the global object (window)
 
 ```javascript
     // Function declaration
@@ -1272,6 +1292,32 @@ Arrow Functions cannot be used as constructors: cannot use new with arrow functi
     const square = () => num*num;
 ```
 
+
+Same function different caller
+
+```js
+const user1 = {
+  name: "Akash"
+};
+
+const user2 = {
+  name: "Rahul"
+};
+
+function greet() {
+  console.log(this.name);
+}
+
+user1.greet = greet;
+user2.greet = greet;
+
+user1.greet(); // Akash
+user2.greet(); // Rahul
+
+// or simply
+greet.call(user1)
+greet.call(user2)
+```
 **Arrow functions do not have their own `this` context. They inherit this from their enclosing lexical scope.**
 
 ```javascript
@@ -1304,7 +1350,31 @@ No arguments object: Arrow functions don’t have their own arguments object. It
 ```
 
 
+```js
+const user = {
+  name: "Akash",
 
+  greet() {
+    const print = () => {
+      console.log(this.name);
+    };
+
+    print();
+  }
+};
+
+user.greet();  //Akash
+```
+
+user.greet()
+     ↓
+this = user
+     ↓
+arrow function
+     ↓
+inherits this
+     ↓
+this = user
 
 
 ```javascript
